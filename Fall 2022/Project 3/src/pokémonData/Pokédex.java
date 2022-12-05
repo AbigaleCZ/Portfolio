@@ -3,8 +3,7 @@ import java.util.*;
 public class Pokédex {
     private ArrayList<Pokémon> pokéList = new ArrayList<>();
     Random gen = new Random();
-    public void addPokémon(String pSpecies, itn pHP, int pSPD) {
-        Pokémon pkmn = new Pokémon(pSpecies, pHP, pSPD);
+    public void addPokémon(Pokémon pkmn) {
         pokéList.add(pkmn);
     }
     public String getPokéList() {
