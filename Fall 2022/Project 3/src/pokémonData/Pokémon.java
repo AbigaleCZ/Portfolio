@@ -7,11 +7,11 @@ public class Pokémon {
     private int hp, currentHP, maxHP, spd;
     private ArrayList<Move> moveList = new ArrayList<>();
     public Pokémon(String pSpecies, int pHP, int pSPD) {
-        species = pSpecies;
-        hp = pHP;
-        maxHP = hp + gen.nextInt(16) + 60;
-        currentHP = maxHP;
-        spd = pSPD + gen.nextInt(16) + 5;
+        this.species = pSpecies;
+        this.hp = pHP;
+        this.maxHP = hp + gen.nextInt(16) + 60;
+        this.currentHP = maxHP;
+        this.spd = pSPD + gen.nextInt(16) + 5;
     }
     public void addMove(String mName, String mType, int mPower) {
         Move move = new Move(mName, mType, mPower);
@@ -59,21 +59,20 @@ public class Pokémon {
     public int getMoveListSize() {
         return moveList.size();
     }
-    public String getMoveName(int num) {
+   public String getMoveName(int num) {
         return moveList.get(num).getName();
     }
-    public String getMoves() {
-        StringBuilder list = new StringBuilder("Moves\n");
-        for (Move m : moveList) {
-            list.append("\n").append(m.getName());
-        }
-        return list.toString();
+    public ArrayList<Move> getMoves() {
+        return moveList;
     }
     public Move getMoveByName(String mName) {
+        int i = -1, n = 0;
         for (Move m : moveList) {
+            i++;
             if (mName.equalsIgnoreCase(m.getName())) {
-                return m;
+                n = i;
             }
         }
-    }mm
+        return moveList.get(n);
+    }
 }

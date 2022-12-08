@@ -6,14 +6,8 @@ public class Pokédex {
     public void addPokémon(Pokémon pkmn) {
         pokéList.add(pkmn);
     }
-    public String getPokéList() {
-        StringBuilder list = new StringBuilder("Available Pokémon:\n");
-        int i = 0;
-        for (Pokémon p : pokéList) {
-            i++;
-            list.append("\n").append(i + ". " + p.getSpecies());
-        }
-        return list.toString();
+    public ArrayList<Pokémon> getPokéList() {
+        return pokéList;
     }
     public Pokémon selectPokémon(int pick) {
         pick--;

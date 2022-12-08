@@ -4,6 +4,7 @@ public class PokémonBattle {
     Scanner input = new Scanner(System.in);
     Random gen = new Random();
     private Pokédex dex = new Pokédex();
+    private int playerIndex;
     public void registerPokémon() {
         while (true) {
             System.out.println("Type register to add a Pokémon to your Pokédex\nor quit to end this function:");
@@ -67,5 +68,73 @@ public class PokémonBattle {
         else {
             createMove(pkmn);
         }
+    }
+    public Pokémon getPlayerPokémon() {
+        playerIndex = displayPokéList();
+        return dex.selectPokémon(playerIndex);
+    }
+    public int displayPokéList() {
+        ArrayList<Pokémon> list = dex.getPokéList();
+        int i = 1, choice;
+        String decision;
+        for (Pokémon p : list) {
+            System.out.println(i + ". " + p.getSpecies());
+            i++;
+        }
+        System.out.println("\nType the number next to a Pokémon to see its information.");
+        choice = Integer.parseInt(input.nextLine());
+        Pokémon pkmn = dex.selectPokémon(choice);
+        ArrayList<Move> mList = pkmn.getMoves();
+        System.out.println(pkmn.getPokémonInfo() + "\n\nMoves:\n");
+        for (Move m : mList) {
+            System.out.println(m.getName() + " (Type: " + m.getType() + ", Power: " + m.getPower() + ")");
+        }
+        System.out.println("\nType continue to look at another Pokémon:");
+        decision = input.nextLine();
+        if (decision.equalsIgnoreCase("continue")) {
+            displayPokéList();
+        }
+        return choice;
+    }
+    public Pokémon getCPUPokémon() {
+        return dex.randomPokémon(playerIndex);
+    }
+    public void quickBattle(Pokémon player, Pokémon cpu) {
+        String choice;
+        ArrayList<Move> list = player.getMoves();
+        System.out.println("Which move will " + player.getSpecies() + " use in this battle?\n");
+        for (Move m : list) {
+            System.out.println(m.getName() + " (Type: " + m.getType() + ", Power: " + m.getPower() + ")");
+        }
+        choice = input.nextLine();
+        Move p1Move = player.getMoveByName(choice);
+        String cpuName = dex.randomMove(cpu);
+        Move cpuMove = cpu.getMoveByName(cpuName);
+        System.out.println(player.getSpecies() + " vs. " + cpu.getSpecies() + "... START!");
+        String winner = null, loser = null;
+        int dmg = 0;
+        double dmgFactor = 1.0;
+        while (player.getHitPoints() > 0 && cpu.getHitPoints() > 0) {
+            if (cpu.getSPD() > player.getSPD()) {
+                dmgFactor = gen.nextDouble(0.85,1.01);
+                dmg = (int) Math.round((22 * cpuMove.getPower() / 50 + 2) * dmgFactor);
+                player.setHitPoints(dmg);
+                if (player.getHitPoints() < 1) {
+                    winner = cpu.getSpecies();
+                    loser = player.getSpecies();
+                }
+            }
+            else {
+                dmgFactor = gen.nextDouble(0.85,1.01);
+                dmg = (int) Math.round((22 * p1Move.getPower() / 50 + 2) * dmgFactor);
+                cpu.setHitPoints(dmg);
+                if (cpu.getHitPoints() < 1) {
+                    winner = player.getSpecies();
+                    loser = cpu.getSpecies();
+                }
+            }
+            System.out.println("Player   : " + player.getHitPoints() + "\nComputer: " + cpu.getHitPoints());
+        }
+        System.out.println(loser + " is unable to battle! The winner is " + winner + "!");
     }
 }
