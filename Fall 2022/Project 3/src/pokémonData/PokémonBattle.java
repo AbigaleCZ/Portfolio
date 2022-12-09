@@ -123,6 +123,13 @@ public class PokémonBattle {
                     winner = cpu.getSpecies();
                     loser = player.getSpecies();
                 }
+                dmgFactor = gen.nextDouble(0.85,1.01);
+                dmg = (int) Math.round((22 * p1Move.getPower() / 50 + 2) * dmgFactor);
+                cpu.setHitPoints(dmg);
+                if (cpu.getHitPoints() < 1) {
+                    winner = player.getSpecies();
+                    loser = cpu.getSpecies();
+                }
             }
             else {
                 dmgFactor = gen.nextDouble(0.85,1.01);
@@ -131,6 +138,13 @@ public class PokémonBattle {
                 if (cpu.getHitPoints() < 1) {
                     winner = player.getSpecies();
                     loser = cpu.getSpecies();
+                }
+                dmgFactor = gen.nextDouble(0.85,1.01);
+                dmg = (int) Math.round((22 * cpuMove.getPower() / 50 + 2) * dmgFactor);
+                player.setHitPoints(dmg);
+                if (player.getHitPoints() < 1) {
+                    winner = cpu.getSpecies();
+                    loser = player.getSpecies();
                 }
             }
             System.out.println("Player   : " + player.getHitPoints() + "\nComputer: " + cpu.getHitPoints());
